@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Trevor Cleworth — Peak Health Protocol</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400&family=JetBrains+Mono:wght@300;400;500;600&family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0908;
+    --paper: #f4f1ea;
+    --paper-2: #ebe6dc;
+    --rust: #8b2e1f;
+    --rust-muted: #c15a3e;
+    --moss: #3a4a2a;
+    --moss-muted: #6b7c4f;
+    --ochre: #b8893a;
+    --ochre-muted: #d9b871;
+    --slate: #2a3440;
+    --slate-muted: #5c6b7a;
+    --cream: #ede6d3;
+    --stone: #a39681;
+    --red-alert: #a32d2d;
+    --amber-alert: #854f0b;
+    --green-good: #3b6d11;
+    --border: rgba(10, 9, 8, 0.12);
+    --border-strong: rgba(10, 9, 8, 0.25);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter Tight', system-ui, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.6;
+    font-size: 15px;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at top left, rgba(184, 137, 58, 0.04) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(58, 74, 42, 0.04) 0%, transparent 50%);
+  }
+
+  /* Typography */
+  .serif { font-family: 'Fraunces', Georgia, serif; font-optical-sizing: auto; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  h1, h2, h3, h4 { font-family: 'Fraunces', Georgia, serif; font-weight: 500; letter-spacing: -0.02em; }
+  h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1; }
+  h2 { font-size: clamp(1.75rem, 3vw, 2.5rem); line-height: 1.1; }
+  h3 { font-size: 1.35rem; line-height: 1.2; }
+  h4 { font-size: 1.05rem; line-height: 1.3; font-weight: 600; }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--stone);
+    font-weight: 500;
+  }
+
+  /* Layout */
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+
+  /* Header */
+  .header-hero {
+    padding: 3rem 0 4rem;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .header-hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--rust) 0%, var(--ochre) 33%, var(--moss) 66%, var(--slate) 100%);
+  }
+  .meta-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--stone);
+    text-transform: uppercase;
+    border-bottom: 0.5px solid var(--border);
+    margin-bottom: 3rem;
+  }
+  .hero-title {
+    font-weight: 400;
+    color: var(--ink);
+    max-width: 24ch;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--rust);
+    font-weight: 300;
+  }
+  .hero-sub {
+    margin-top: 1.5rem;
+    font-size: 1.125rem;
+    max-width: 52ch;
+    color: var(--slate);
+    line-height: 1.6;
+  }
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 0.5px solid var(--border);
+  }
+  .hero-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .hero-stat-num {
+    font-family: 'Fraunces', serif;
+    font-size: 2.5rem;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .hero-stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--stone);
+  }
+
+  /* Section styling */
+  section {
+    padding: 5rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--rust);
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+  .section-title em {
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  /* Priority action cards */
+  .action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 1.25rem;
+  }
+  .action-card {
+    background: white;
+    border: 1px solid var(--border);
+    padding: 1.75rem;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  .action-card:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  }
+  .action-card.urgent { border-left: 4px solid var(--rust); }
+  .action-card.priority { border-left: 4px solid var(--ochre); }
+  .action-card.ongoing { border-left: 4px solid var(--moss); }
+  .action-card .priority-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .action-card.urgent .priority-tag { background: rgba(139, 46, 31, 0.1); color: var(--rust); }
+  .action-card.priority .priority-tag { background: rgba(184, 137, 58, 0.15); color: var(--amber-alert); }
+  .action-card.ongoing .priority-tag { background: rgba(58, 74, 42, 0.1); color: var(--moss); }
+  .action-card h4 { margin-bottom: 10px; }
+  .action-card p { font-size: 14px; color: var(--slate); line-height: 1.6; }
+  .action-card .deadline {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 0.5px dashed var(--border-strong);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--rust);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* Genetics cards */
+  .gene-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1rem;
+  }
+  .gene-card {
+    background: var(--paper-2);
+    border: 0.5px solid var(--border);
+    padding: 1.5rem;
+    position: relative;
+  }
+  .gene-card .gene-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .gene-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .gene-status {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .status-hetero { background: rgba(184, 137, 58, 0.2); color: var(--amber-alert); }
+  .status-homo { background: rgba(139, 46, 31, 0.15); color: var(--rust); }
+  .status-normal { background: rgba(58, 74, 42, 0.15); color: var(--green-good); }
+  .gene-function {
+    font-family: 'Fraunces', serif;
+    font-size: 15px;
+    font-style: italic;
+    color: var(--slate);
+    margin-bottom: 12px;
+  }
+  .gene-desc { font-size: 13px; color: var(--slate); line-height: 1.6; margin-bottom: 12px; }
+  .gene-remedy {
+    margin-top: 10px;
+    padding: 10px 12px;
+    background: white;
+    border-left: 2px solid var(--moss);
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+  .gene-remedy strong { font-weight: 600; color: var(--moss); }
+
+  /* Bio markers */
+  .marker-section {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  .marker-row {
+    display: grid;
+    grid-template-columns: minmax(160px, 2fr) 100px 1fr 140px;
+    gap: 1.5rem;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    background: white;
+    border: 0.5px solid var(--border);
+  }
+  .marker-name { font-weight: 500; font-size: 14px; }
+  .marker-name .unit { display: block; font-size: 11px; color: var(--stone); font-weight: 400; margin-top: 2px; }
+  .marker-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .marker-bar-wrap {
+    position: relative;
+    height: 6px;
+    background: var(--paper-2);
+    border-radius: 3px;
+    overflow: visible;
+  }
+  .marker-bar-optimal {
+    position: absolute;
+    height: 100%;
+    background: rgba(58, 74, 42, 0.3);
+    border-radius: 3px;
+  }
+  .marker-dot {
+    position: absolute;
+    top: -4px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid white;
+    transform: translateX(-50%);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .dot-red { background: var(--rust); }
+  .dot-amber { background: var(--ochre); }
+  .dot-green { background: var(--moss); }
+  .marker-status {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: right;
+  }
+  .status-text-red { color: var(--rust); }
+  .status-text-amber { color: var(--amber-alert); }
+  .status-text-green { color: var(--moss); }
+  @media (max-width: 780px) {
+    .marker-row { grid-template-columns: 1fr; gap: 0.75rem; }
+    .marker-status { text-align: left; }
+  }
+
+  /* Supplement stack */
+  .stack-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1rem;
+  }
+  .supp-card {
+    background: white;
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    position: relative;
+  }
+  .supp-card.primary { background: var(--cream); border-color: var(--ochre); }
+  .supp-name { font-weight: 600; font-size: 15px; margin-bottom: 6px; }
+  .supp-brand { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--stone); letter-spacing: 0.05em; margin-bottom: 12px; }
+  .supp-dose {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--rust);
+    margin-bottom: 12px;
+  }
+  .supp-why { font-size: 13px; color: var(--slate); line-height: 1.55; margin-bottom: 12px; }
+  .supp-link {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 8px 12px;
+    border: 1px solid var(--ink);
+    transition: all 0.2s ease;
+  }
+  .supp-link:hover { background: var(--ink); color: var(--paper); }
+
+  /* Timing schedule */
+  .schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  @media (max-width: 780px) {
+    .schedule-grid { grid-template-columns: 1fr; }
+  }
+  .time-block {
+    background: var(--paper-2);
+    border: 0.5px solid var(--border);
+    padding: 1.5rem;
+  }
+  .time-label {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--rust);
+    margin-bottom: 4px;
+  }
+  .time-meal {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 14px;
+  }
+  .time-items { list-style: none; font-size: 14px; }
+  .time-items li {
+    padding: 6px 0;
+    border-bottom: 0.5px dashed var(--border);
+    color: var(--slate);
+  }
+  .time-items li:last-child { border: 0; }
+  .time-items li::before {
+    content: '◆';
+    color: var(--ochre);
+    margin-right: 8px;
+    font-size: 8px;
+    vertical-align: middle;
+  }
+
+  /* Diet section */
+  .diet-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  @media (max-width: 780px) {
+    .diet-layout { grid-template-columns: 1fr; }
+  }
+  .diet-column h4 {
+    padding-bottom: 10px;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .diet-column h4::before {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .diet-emphasize h4::before { background: var(--moss); }
+  .diet-avoid h4::before { background: var(--rust); }
+  .diet-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .diet-list li {
+    padding: 10px 14px;
+    background: white;
+    border-left: 3px solid transparent;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .diet-emphasize .diet-list li { border-left-color: var(--moss); }
+  .diet-avoid .diet-list li { border-left-color: var(--rust); }
+  .diet-list li strong { display: block; font-weight: 600; margin-bottom: 2px; font-family: 'Fraunces', serif; font-size: 15px; font-style: italic; }
+  .diet-list li span { color: var(--slate); font-size: 13px; }
+
+  /* Exercise layout */
+  .exercise-week {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin: 2rem 0;
+  }
+  @media (max-width: 780px) {
+    .exercise-week { grid-template-columns: repeat(2, 1fr); }
+  }
+  .day-card {
+    background: white;
+    border: 0.5px solid var(--border);
+    padding: 1rem;
+    text-align: center;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .day-card.rest { background: var(--paper-2); }
+  .day-card.train { border-left: 3px solid var(--moss); }
+  .day-card.muay { border-left: 3px solid var(--rust); background: linear-gradient(to bottom, white 0%, rgba(139, 46, 31, 0.03) 100%); }
+  .day-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: var(--stone); margin-bottom: 8px; }
+  .day-activity { font-family: 'Fraunces', serif; font-size: 14px; line-height: 1.3; margin-bottom: 6px; }
+  .day-note { font-size: 11px; color: var(--slate); }
+
+  /* Lifestyle pillars */
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+  }
+  .pillar {
+    padding: 1.5rem;
+    background: white;
+    border: 0.5px solid var(--border);
+    position: relative;
+  }
+  .pillar-num {
+    font-family: 'Fraunces', serif;
+    font-size: 3rem;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--ochre);
+    margin-bottom: 8px;
+  }
+  .pillar h4 { margin-bottom: 10px; }
+  .pillar p { font-size: 13px; color: var(--slate); line-height: 1.6; }
+
+  /* Narrative/summary */
+  .narrative {
+    max-width: 72ch;
+    margin: 0 auto;
+    font-family: 'Fraunces', serif;
+    font-size: 1.15rem;
+    line-height: 1.75;
+    color: var(--slate);
+  }
+  .narrative p { margin-bottom: 1.25rem; }
+  .narrative p strong { font-weight: 600; font-style: italic; color: var(--ink); }
+  .narrative p em { font-style: italic; color: var(--rust); }
+  .pull-quote {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.5rem;
+    line-height: 1.4;
+    color: var(--ink);
+    padding: 2rem 0;
+    margin: 2rem 0;
+    border-top: 0.5px solid var(--border);
+    border-bottom: 0.5px solid var(--border);
+    text-align: center;
+    max-width: 48ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .pull-quote::before {
+    content: '';
+    display: block;
+    width: 40px; height: 2px;
+    background: var(--rust);
+    margin: 0 auto 1.5rem;
+  }
+
+  /* Footer */
+  footer {
+    padding: 3rem 0;
+    text-align: center;
+    color: var(--stone);
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+  footer p { margin-bottom: 6px; }
+  .divider {
+    width: 60px; height: 1px;
+    background: var(--border-strong);
+    margin: 0 auto 1.5rem;
+  }
+
+  /* Table of contents */
+  .toc {
+    position: sticky;
+    top: 20px;
+    padding: 1.5rem;
+    background: var(--paper-2);
+    border: 0.5px solid var(--border);
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+  }
+  .toc-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--stone);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+  .toc ol { list-style: none; counter-reset: toc; }
+  .toc li {
+    counter-increment: toc;
+    margin-bottom: 10px;
+    font-size: 13px;
+  }
+  .toc li::before {
+    content: counter(toc, decimal-leading-zero);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--stone);
+    margin-right: 10px;
+    letter-spacing: 0.05em;
+  }
+  .toc a {
+    color: var(--slate);
+    text-decoration: none;
+    transition: color 0.2s;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+  }
+  .toc a:hover { color: var(--rust); }
+
+  .layout-with-toc {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  @media (max-width: 980px) {
+    .layout-with-toc { grid-template-columns: 1fr; }
+    .toc { position: relative; top: auto; margin-bottom: 2rem; }
+  }
+
+  /* Print optimization */
+  @media print {
+    body { background: white; }
+    .toc { display: none; }
+    .layout-with-toc { grid-template-columns: 1fr; }
+    section { page-break-inside: avoid; }
+    .action-card, .gene-card, .supp-card, .pillar, .marker-row { break-inside: avoid; }
+  }
+
+  /* Decorative flourish */
+  .flourish {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 2rem 0;
+    color: var(--stone);
+  }
+  .flourish-line {
+    height: 0.5px;
+    background: var(--border-strong);
+    flex: 1;
+    max-width: 80px;
+  }
+  .flourish-dot { color: var(--rust); }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="meta-bar">
+    <span>Personal Health Protocol</span>
+    <span>v1.0 · Apr 2026</span>
+  </div>
+
+  <header class="header-hero">
+    <div class="eyebrow">Comprehensive health dashboard</div>
+    <h1 class="hero-title">A protocol for <em>peak health</em> at thirty-two.</h1>
+    <p class="hero-sub">
+      Synthesized from a detailed genetic variant report, a functional blood panel, and a four-year longitudinal medical record. This document translates data into direction — what to do today, this week, this month, and for the long haul.
+    </p>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num serif">40+</div>
+        <div class="hero-stat-label">Genetic variants analyzed</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num serif">6</div>
+        <div class="hero-stat-label">Lab panels in record</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num serif">4</div>
+        <div class="hero-stat-label">Biomarkers flagged urgent</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num serif">3</div>
+        <div class="hero-stat-label">Recurring health threads</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout-with-toc" style="padding-top: 3rem;">
+    <aside class="toc">
+      <div class="toc-title">Contents</div>
+      <ol>
+        <li><a href="#summary">The big picture</a></li>
+        <li><a href="#actions">Priority actions</a></li>
+        <li><a href="#biomarkers">Biomarker snapshot</a></li>
+        <li><a href="#genetics">Genetic blueprint</a></li>
+        <li><a href="#stack">Supplement stack</a></li>
+        <li><a href="#timing">Daily timing</a></li>
+        <li><a href="#diet">Diet protocol</a></li>
+        <li><a href="#exercise">Exercise programming</a></li>
+        <li><a href="#lifestyle">Lifestyle pillars</a></li>
+        <li><a href="#longterm">The long view</a></li>
+      </ol>
+    </aside>
+
+    <main>
+      <!-- ======================= 01 SUMMARY ======================= -->
+      <section id="summary" style="padding-top: 0;">
+        <div class="section-header">
+          <div class="section-number">§01</div>
+          <h2 class="section-title">The <em>big picture</em></h2>
+        </div>
+        <div class="narrative">
+          <p>Three overlapping threads run through your entire health record: <strong>metabolic stress</strong> (lipids, liver, emerging insulin resistance), <strong>gut dysfunction</strong> (chronic diarrhea unresolved for a decade), and <strong>mental health under load</strong> (anxiety, sleep, and the alcohol coping loop that worsens the first two). Your genetics — particularly the MTHFR/MTRR methylation variants and the PNPLA3 liver variant — amplify each of these threads rather than cause them.</p>
+          <p>The clean read of your data is that you are not broken. You are <em>tunable</em>. Every single one of your flagged biomarkers is directionally correctable with consistent inputs over 60–90 days. You already have the hardest piece in place: the behavioral infrastructure — sobriety, Muay Thai, a morning routine, a daily regiment tracker. The remaining work is tightening the supplement protocol, getting the thyroid answer, and making consistency non-negotiable on the few things that have historically been start-stop — namely Vitamin D.</p>
+          <p>If you optimize the next 90 days against this protocol, the most likely outcome is: Vitamin D corrects into optimal range, triglycerides drop below 100, estrogen normalizes, testosterone rises on its own without intervention, TSH either normalizes or gets a clear diagnosis, and homocysteine continues its downward trajectory. That is what peak health at thirty-two looks like for you specifically.</p>
+        </div>
+
+        <div class="pull-quote">
+          "You are not broken. You are tunable. The data says so."
+        </div>
+      </section>
+
+      <!-- ======================= 02 PRIORITY ACTIONS ======================= -->
+      <section id="actions">
+        <div class="section-header">
+          <div class="section-number">§02</div>
+          <h2 class="section-title">Priority <em>actions</em></h2>
+        </div>
+
+        <h3 style="margin-bottom: 1rem; color: var(--rust);">Urgent (this week)</h3>
+        <div class="action-grid" style="margin-bottom: 2.5rem;">
+          <div class="action-card urgent">
+            <span class="priority-tag">01 · This week</span>
+            <h4>Order Free T4 + TPO antibodies</h4>
+            <p>Your TSH jumped from 2.69 to 5.40 in 18 months. This isn't noise. Get Free T4 and TPO antibodies ordered before the May 4 appointment so you have answers in hand. This tells you whether the thyroid issue is Hashimoto's (autoimmune) or correctable hypothyroidism driven by Vitamin D deficiency and stress load.</p>
+            <div class="deadline">→ Before May 4, 2026</div>
+          </div>
+
+          <div class="action-card urgent">
+            <span class="priority-tag">02 · Daily</span>
+            <h4>Make Vitamin D3/K2 non-negotiable</h4>
+            <p>Prescribed since December 2022. Three and a half years later, your level is lower than at diagnosis. This is the single supplement that touches thyroid, testosterone, mood, immunity, and muscle recovery — and it is also the one most directly under your control. Put the bottle next to your toothbrush.</p>
+            <div class="deadline">→ Starting today. No excuses.</div>
+          </div>
+
+          <div class="action-card urgent">
+            <span class="priority-tag">03 · This week</span>
+            <h4>Follow up on the GI referral</h4>
+            <p>Ten years of chronic diarrhea. Gastroenterology referral placed September 2024. Celiac panel ordered November 2024 — no result in your record. Call Dr. Ince's office this week and find out what happened with both. Unresolved gut inflammation is compounding every other issue on this dashboard.</p>
+            <div class="deadline">→ Call office this week</div>
+          </div>
+        </div>
+
+        <h3 style="margin-bottom: 1rem; color: var(--amber-alert);">Priority (this month)</h3>
+        <div class="action-grid" style="margin-bottom: 2.5rem;">
+          <div class="action-card priority">
+            <span class="priority-tag">04 · May 4 visit</span>
+            <h4>Bring your Rythm labs to Dr. Ince</h4>
+            <p>Your PCP may not have the Rythm Health panel. Bring it. Discuss the TSH, the triglyceride trajectory, the blood pressure creep (130/85 for 18 months now), and the elevated estrogen. This visit is the opportunity to turn three disconnected datasets into a coordinated plan.</p>
+            <div class="deadline">→ Wellness visit, May 4</div>
+          </div>
+
+          <div class="action-card priority">
+            <span class="priority-tag">05 · Within 60 days</span>
+            <h4>Switch to Methyl-Guard Plus when current bottle is done</h4>
+            <p>Thorne Basic B is working — homocysteine moved from 10.6 to 8.4. Methyl-Guard Plus will accelerate the improvement given your MTHFR + MTRR compound genotype. Start at half dose for the first week to avoid overmethylation symptoms.</p>
+            <div class="deadline">→ On next reorder</div>
+          </div>
+
+          <div class="action-card priority">
+            <span class="priority-tag">06 · 60–90 days</span>
+            <h4>Retest everything that was flagged</h4>
+            <p>Full panel retest in 90 days: Vitamin D, lipid panel with trigs, ApoB, estrogen/testosterone, TSH/Free T4, homocysteine, and hs-CRP. Track the trajectory. If things are moving the right direction, stay the course. If they're not, you'll know early enough to adjust.</p>
+            <div class="deadline">→ Late July 2026</div>
+          </div>
+        </div>
+
+        <h3 style="margin-bottom: 1rem; color: var(--moss);">Ongoing (the long game)</h3>
+        <div class="action-grid">
+          <div class="action-card ongoing">
+            <span class="priority-tag">07 · Forever</span>
+            <h4>Sobriety through June 11 and beyond</h4>
+            <p>Your liver enzymes, triglycerides, estrogen elevation, blood pressure, anxiety, and gut inflammation all trace back to periods of heavier alcohol use. Your PNPLA3 variant means alcohol hits your liver harder than average. The bet and the accountability structure work — extend the pattern past June 11.</p>
+            <div class="deadline">→ Structural, not time-bound</div>
+          </div>
+
+          <div class="action-card ongoing">
+            <span class="priority-tag">08 · Annual</span>
+            <h4>Annual eye exam (CFH variant)</h4>
+            <p>You carry one copy of the pathogenic CFH Y402H variant for age-related macular degeneration. Annual dilated eye exam starting now. AREDS2-formula supplement optional but reasonable. Never smoke. Wear UV-protective sunglasses outside — you live in Texas.</p>
+            <div class="deadline">→ Book annually</div>
+          </div>
+
+          <div class="action-card ongoing">
+            <span class="priority-tag">09 · Monthly</span>
+            <h4>Home BP monitoring</h4>
+            <p>Your pressure has crept from 114/72 in 2021 to 130/85–90 today. Your ADD1 variant means low-sodium eating is especially effective for you. A $40 BP cuff and weekly readings tell you whether lifestyle changes are working without waiting for annual visits.</p>
+            <div class="deadline">→ Weekly, log it</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================= 03 BIOMARKERS ======================= -->
+      <section id="biomarkers">
+        <div class="section-header">
+          <div class="section-number">§03</div>
+          <h2 class="section-title">Biomarker <em>snapshot</em></h2>
+        </div>
+
+        <p style="max-width: 60ch; margin-bottom: 2rem; color: var(--slate);">
+          From your April 2026 Rythm Health panel. Dot position shows where your value sits on the range from lab floor to lab ceiling. The shaded green zone is the <em>performance optimal</em> range — tighter than clinical normal, targeted at peak function.
+        </p>
+
+        <div class="marker-section">
+          <!-- TSH -->
+          <div class="marker-row">
+            <div class="marker-name">Thyroid Stimulating Hormone <span class="unit">µIU/mL · optimal 0.5–2.5</span></div>
+            <div class="marker-value status-text-red">5.40</div>
+            <div class="marker-bar-wrap">
+              <div class="marker-bar-optimal" style="left: 5%; width: 45%;"></div>
+              <div class="marker-dot dot-red" style="left: 95%;"></div>
+            </div>
+            <div class="marker-status status-text-red">Above ceiling</div>
+          </div>
+
+          <!-- Vitamin D -->
+          <div class="marker-row">
+            <div class="marker-name">Vitamin D (25-OH) <span class="unit">ng/mL · optimal 55–80</span></div>
+            <div class="marker-value status-text-red">24.7</div>
+            <div class="marker-bar-wrap">
+              <div class="marker-bar-optimal" style="left: 50%; width: 35%;"></div>
+              <div class="marker-dot dot-red" style="left: 10%;"></div>
+            </div>
+            <div class="marker-status status-text-red">Deficient</div>
+          </div>
+
+          <!-- Triglycerides -->
+          <div class="marker-row">
+            <div class="marker-name">Triglycerides <span class="unit">mg/dL · optimal 35–90</span></div>
+            <div class="marker-value status-text-amber">183</div>
+            <div class="marker-bar-wrap">
+              <div class="marker-bar-optimal" style="left: 15%; width: 25%;"></div>
+              <div class="marker-dot dot-amber" style="left: 65%;"></div>
+            </div>
+            <div class="marker-status status-text-amber">Elevated</div>
+          </div>
+
+          <!-- Trig/HDL Ratio -->
+          <div class="marker-row">
+            <div class="marker-name">Triglycerides / HDL Ratio <span class="unit">optimal 0–1.25</span></div>
+            <div class="marker-value status-text-red">4.07</div>
+            <div class="marker-bar-wrap">
+              <div class="marker-bar-optimal" style="left: 0%; width: 25%;"></div>
+              <div class="marker-dot dot-red" style="left: 88%;"></div>
+            </div>
+            <div class="marker-status status-text-red">Insulin resistance signal</div>
+          </div>
+
+          <!-- Remnant Cholesterol -->
+          <div class="marker-row">
+            <div class="marker-name">Remnant Cholesterol <span class="unit">mg/dL · optimal 0–20</span></div>
+            <div class="marker-value status-text-red">36.6</div>
+            <div class="marker-bar-wrap">
+              <div class="marker-bar-optimal" style="left: 0%; width: 40%;"></div>
+              <div class="marker-dot dot-red" style="left: 78%;"></div>
+            </div>
+            <div class="marker-status status-text-red">Elevated</div>
+          </div>
+
+          <!-- ApoB -->
+          <div class="marker-row">
+            <div class="marker-name">ApoB <span class="unit">mg/dL · optimal 50–80</span></div>
+            <div class="marker-value status-text-amber">96.7</div>
+            <div class="marker-bar-wrap">
+              <div class="marker-bar-optimal" style="left: 45%; width: 25%;"></div>
+              <div class="marker-dot dot-amber" style="left: 85%;"></div>
+            </div>
+            <div class="marker-status status-text-amber">Slightly high</div>
+          </div>
+
+          <!-- Estrogen -->
+          <div class="marker-row">
+            <div class="marker-name">Estrogen <span class="unit">pg/mL · optimal 20–30</span></div>
+            <div class="marker-value status-text-amber">34.7</div>
+            <div class="marker-bar-wrap">
+              <div class="marker-bar-optimal" style="left: 25%; width: 40%;"></div>
+              <div class="marker-dot dot-amber" style="left: 85%;"></div>
+            </div>
+            <div class="marker-status status-text-amber">Above ceiling</div>
+          </div>
+
+          <!-- Testosterone -->
+          <div class="marker-row">
+            <div class="marker-name">Total Testosterone <span class="unit">ng/dL · optimal 700–1100</span></div>
+            <div class="marker-value status-text-amber">625</div>
+            <div class="marker-bar-wrap">
+              <div class="marker-bar-optimal" style="left: 70%; width: 30%;"></div>
+              <div class="marker-dot dot-amber" style="left: 52%;"></div>
+            </div>
+            <div class="marker-status status-text-amber">Below optimal</div>
+          </div>
+
+          <!-- Free T -->
+          <div class="marker-row">
+            <div class="marker-name">Free Testosterone <span class="unit">pg/mL · optimal 120–180</span></div>
+            <div class="marker-value status-text-green">139.57</div>
+            <div class="marker-bar-wrap">
+              <div class="marker-bar-optimal" style="left: 40%; width: 40%;"></div>
+              <div class="marker-dot dot-green" style="left: 55%;"></div>
+            </div>
+            <div class="marker-status status-text-green">In range</div>
+          </div>
+
+          <!-- hs-CRP -->
+          <div class="marker-row">
+            <div class="marker-name">hs-CRP (inflammation) <span class="unit">mg/L · optimal 0–1</span></div>
+            <div class="marker-value status-text-green">1.01</div>
+            <div class="marker-bar-wrap">
+              <div class="marker-bar-optimal" style="left: 0%; width: 33%;"></div>
+              <div class="marker-dot dot-green" style="left: 33%;"></div>
+            </div>
+            <div class="marker-status status-text-green">Solid</div>
+          </div>
+
+          <!-- Homocysteine -->
+          <div class="marker-row">
+            <div class="marker-name">Homocysteine (Jul 2025) <span class="unit">µmol/L · optimal &lt;7</span></div>
+            <div class="marker-value status-text-green">8.4</div>
+            <div class="marker-bar-wrap">
+              <div class="marker-bar-optimal" style="left: 0%; width: 47%;"></div>
+              <div class="marker-dot dot-green" style="left: 56%;"></div>
+            </div>
+            <div class="marker-status status-text-green">Trending down</div>
+          </div>
+
+          <!-- Ferritin -->
+          <div class="marker-row">
+            <div class="marker-name">Ferritin <span class="unit">ng/mL · optimal 100–400</span></div>
+            <div class="marker-value status-text-green">174</div>
+            <div class="marker-bar-wrap">
+              <div class="marker-bar-optimal" style="left: 17%; width: 55%;"></div>
+              <div class="marker-dot dot-green" style="left: 30%;"></div>
+            </div>
+            <div class="marker-status status-text-green">Good</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================= 04 GENETICS ======================= -->
+      <section id="genetics">
+        <div class="section-header">
+          <div class="section-number">§04</div>
+          <h2 class="section-title">Genetic <em>blueprint</em></h2>
+        </div>
+
+        <p style="max-width: 60ch; margin-bottom: 2rem; color: var(--slate);">
+          The variants that actually affect your day-to-day health choices. Omitted: pharmacogenomic variants for drugs you're not taking, and variants with minor or no clinical consequence.
+        </p>
+
+        <div class="gene-grid">
+          <div class="gene-card">
+            <div class="gene-header">
+              <span class="gene-name">MTHFR C677T</span>
+              <span class="gene-status status-hetero">Heterozygous</span>
+            </div>
+            <div class="gene-function">Folate conversion to active methylfolate.</div>
+            <p class="gene-desc">Reduced MTHFR enzyme activity. One of the most studied and actionable variants in consumer genomics. Affects methylation, which touches cardiovascular risk, mood regulation, gut lining integrity, and detoxification.</p>
+            <div class="gene-remedy"><strong>Remedy:</strong> Methylated B-complex with 5-MTHF (not folic acid). Keep homocysteine below 7. Avoid fortified foods with synthetic folic acid where practical.</div>
+          </div>
+
+          <div class="gene-card">
+            <div class="gene-header">
+              <span class="gene-name">MTRR I22M (A66G)</span>
+              <span class="gene-status status-homo">Homozygous</span>
+            </div>
+            <div class="gene-function">B12 recycling into its active form.</div>
+            <p class="gene-desc">Two copies — compounds the MTHFR variant on the same methylation pathway. Associated with elevated homocysteine risk and, in some studies, higher risk of neural tube defects in offspring (relevant for family planning).</p>
+            <div class="gene-remedy"><strong>Remedy:</strong> Methylcobalamin (active B12), not cyanocobalamin. Thorne Methyl-Guard Plus covers this. Target serum B12 above 600 pg/mL.</div>
+          </div>
+
+          <div class="gene-card">
+            <div class="gene-header">
+              <span class="gene-name">CFH Y402H (rs1061170)</span>
+              <span class="gene-status status-hetero">Heterozygous</span>
+            </div>
+            <div class="gene-function">Complement factor H — immune/inflammation regulation in the eye.</div>
+            <p class="gene-desc">Pathogenic risk factor for age-related macular degeneration. Won't matter for decades, but interventions are most effective when started early. Heterozygotes have meaningfully elevated lifetime AMD risk vs non-carriers.</p>
+            <div class="gene-remedy"><strong>Remedy:</strong> Annual dilated eye exams. UV-blocking sunglasses. Never smoke. Consider AREDS2 formulation (lutein, zeaxanthin, omega-3, zinc). Fish oil you're already taking overlaps.</div>
+          </div>
+
+          <div class="gene-card">
+            <div class="gene-header">
+              <span class="gene-name">PNPLA3</span>
+              <span class="gene-status status-hetero">Heterozygous</span>
+            </div>
+            <div class="gene-function">Liver fat metabolism.</div>
+            <p class="gene-desc">Increases susceptibility to non-alcoholic fatty liver disease (NAFLD) and amplifies alcohol's liver impact. Context matters: you've had three separate episodes of elevated AST/ALT on record. This gene is part of why.</p>
+            <div class="gene-remedy"><strong>Remedy:</strong> Sustained alcohol minimization (not just through June). Low refined carb intake. Periodic liver enzyme monitoring (ALT/AST) at annual physicals. Omega-3s help.</div>
+          </div>
+
+          <div class="gene-card">
+            <div class="gene-header">
+              <span class="gene-name">COMT Val158Met</span>
+              <span class="gene-status status-hetero">Heterozygous</span>
+            </div>
+            <div class="gene-function">Dopamine clearance in the prefrontal cortex.</div>
+            <p class="gene-desc">The "warrior-worrier" gene. Met allele slows dopamine breakdown — higher baseline dopamine, stronger stress reactivity, potentially better working memory under low stress. Directly relevant to your anxiety diagnosis.</p>
+            <div class="gene-remedy"><strong>Remedy:</strong> Manage stimulants (caffeine, nicotine) more tightly than average. Exercise — especially the Muay Thai — is the most powerful natural dopamine regulator. Sleep quality matters disproportionately. Magnesium glycinate evening dose can help.</div>
+          </div>
+
+          <div class="gene-card">
+            <div class="gene-header">
+              <span class="gene-name">AMPD1</span>
+              <span class="gene-status status-hetero">Carrier</span>
+            </div>
+            <div class="gene-function">Muscle AMP deaminase — energy/ATP pathway in muscle.</div>
+            <p class="gene-desc">Carrier status. Most carriers are asymptomatic, but some experience disproportionate post-exercise muscle fatigue or slower recovery. Worth knowing given Muay Thai twice weekly.</p>
+            <div class="gene-remedy"><strong>Remedy:</strong> Prioritize post-training protein + carbs within 60 minutes. Consider magnesium supplementation (supports ATP). D-ribose can help if recovery becomes an issue. Monitor how you feel post-session.</div>
+          </div>
+
+          <div class="gene-card">
+            <div class="gene-header">
+              <span class="gene-name">ADD1 G460W</span>
+              <span class="gene-status status-hetero">Heterozygous</span>
+            </div>
+            <div class="gene-function">Sodium-sensitive blood pressure regulation.</div>
+            <p class="gene-desc">Salt-sensitive hypertension risk variant. Means a low-sodium diet is unusually effective for you specifically, and high-sodium days will push your BP up more than they would for others.</p>
+            <div class="gene-remedy"><strong>Remedy:</strong> DASH-style eating. Limit processed foods (the main sodium source). Potassium-rich foods help counteract (leafy greens, avocado, potatoes). Target &lt;2,300mg sodium/day, &lt;1,500mg if BP stays elevated.</div>
+          </div>
+
+          <div class="gene-card">
+            <div class="gene-header">
+              <span class="gene-name">VKORC1</span>
+              <span class="gene-status status-hetero">Heterozygous</span>
+            </div>
+            <div class="gene-function">Warfarin metabolism.</div>
+            <p class="gene-desc">Matters only if you're ever prescribed blood thinners — your standard dose will differ. Flag this to any prescribing physician for life. Not a daily concern.</p>
+            <div class="gene-remedy"><strong>Remedy:</strong> Note in your medical file. Mention if anticoagulation is ever discussed.</div>
+          </div>
+
+          <div class="gene-card">
+            <div class="gene-header">
+              <span class="gene-name">NAT2 (slow acetylator)</span>
+              <span class="gene-status status-homo">Homozygous</span>
+            </div>
+            <div class="gene-function">Drug/toxin metabolism.</div>
+            <p class="gene-desc">You metabolize certain drugs (isoniazid, sulfonamides, some chemotherapy) more slowly than average. Also associated with slightly elevated sensitivity to certain dietary carcinogens (well-charred meats).</p>
+            <div class="gene-remedy"><strong>Remedy:</strong> Avoid extremely well-done/charred meats as a habit. Mention slow acetylator status to any prescribing physician. Not a daily-life constraint otherwise.</div>
+          </div>
+
+          <div class="gene-card">
+            <div class="gene-header">
+              <span class="gene-name">LCT / MCM6</span>
+              <span class="gene-status status-normal">Homozygous AA (good)</span>
+            </div>
+            <div class="gene-function">Lactase persistence.</div>
+            <p class="gene-desc">Two copies of the lactase persistence allele. You can digest dairy fully throughout life. No genetic basis for avoiding dairy.</p>
+            <div class="gene-remedy"><strong>Remedy:</strong> None needed. Enjoy.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================= 05 SUPPLEMENT STACK ======================= -->
+      <section id="stack">
+        <div class="section-header">
+          <div class="section-number">§05</div>
+          <h2 class="section-title">Supplement <em>stack</em></h2>
+        </div>
+
+        <p style="max-width: 60ch; margin-bottom: 2rem; color: var(--slate);">
+          Every item here is either prescribed by your PCP or directly indicated by your genetic variants and bloodwork. Buy through Fullscript first (your PCP has an account linked to your email) — often discounted vs Amazon.
+        </p>
+
+        <div class="stack-container">
+          <div class="supp-card primary">
+            <div class="supp-name">Vitamin D3 + K2</div>
+            <div class="supp-brand">Zhou Nutrition · prescribed Dec 2022</div>
+            <div class="supp-dose">5,000 IU D3 + K2 · daily, with breakfast</div>
+            <p class="supp-why">The most-prescribed, most-skipped item on your chart. Corrects the deficiency your doctor has been trying to fix for 3+ years. K2 directs calcium to bones rather than arteries.</p>
+            <a href="https://www.amazon.com/s?k=Zhou+Nutrition+K2+D3" class="supp-link" target="_blank">Amazon →</a>
+          </div>
+
+          <div class="supp-card primary">
+            <div class="supp-name">Methyl-Guard Plus</div>
+            <div class="supp-brand">Thorne · upgrade from Basic B</div>
+            <div class="supp-dose">Start ½ dose week 1, then full dose · morning with food</div>
+            <p class="supp-why">Fully methylated B-complex. Direct answer to your MTHFR + MTRR compound genotype. Contains 5-MTHF, methylcobalamin, P5P, and riboflavin 5'-phosphate — every B in its pre-converted active form.</p>
+            <a href="https://www.amazon.com/s?k=Thorne+Methyl-Guard+Plus" class="supp-link" target="_blank">Amazon →</a>
+          </div>
+
+          <div class="supp-card primary">
+            <div class="supp-name">EPA / Omega-3</div>
+            <div class="supp-brand">Pure Encapsulations · prescribed Oct 2024</div>
+            <div class="supp-dose">2 softgels daily · with biggest meal</div>
+            <p class="supp-why">Originally a prescription for Vascepa, substituted to supplement form when insurance denied. Most evidence-backed intervention for elevated triglycerides. Also supports CFH/macular and inflammation.</p>
+            <a href="https://www.amazon.com/s?k=Pure+Encapsulations+EPA+Ultimate" class="supp-link" target="_blank">Amazon →</a>
+          </div>
+
+          <div class="supp-card">
+            <div class="supp-name">Red Yeast Rice + CoQ10</div>
+            <div class="supp-brand">Thorne Choleast · recommended Aug 2024</div>
+            <div class="supp-dose">1 capsule daily · with food</div>
+            <p class="supp-why">Natural alternative to a statin for your lipid pattern. CoQ10 protects against the muscle side effects RYR can cause. Keep taking while triglycerides and ApoB remain elevated.</p>
+            <a href="https://www.amazon.com/s?k=Thorne+Choleast" class="supp-link" target="_blank">Amazon →</a>
+          </div>
+
+          <div class="supp-card">
+            <div class="supp-name">Probiotic (PRO-15)</div>
+            <div class="supp-brand">Hyperbiotics · recommended Sep 2024</div>
+            <div class="supp-dose">1 tablet daily · evening</div>
+            <p class="supp-why">Time-release probiotic targeting the chronic diarrhea thread. Pair with GI follow-up — a probiotic alone won't fix a decade of gut issues, but it's part of the protocol.</p>
+            <a href="https://www.amazon.com/s?k=Hyperbiotics+PRO-15" class="supp-link" target="_blank">Amazon →</a>
+          </div>
+
+          <div class="supp-card">
+            <div class="supp-name">Leaky Gut Revive</div>
+            <div class="supp-brand">Amy Myers MD · recommended Nov 2024</div>
+            <div class="supp-dose">1 scoop daily · morning or evening</div>
+            <p class="supp-why">L-glutamine, aloe, marshmallow root — supports intestinal lining repair. Pairs with the probiotic and the gluten elimination trial your PCP suggested.</p>
+            <a href="https://www.amazon.com/s?k=Amy+Myers+MD+Leaky+Gut+Revive" class="supp-link" target="_blank">Amazon →</a>
+          </div>
+
+          <div class="supp-card">
+            <div class="supp-name">Magnesium Glycinate</div>
+            <div class="supp-brand">Addition based on genetics</div>
+            <div class="supp-dose">200–400 mg · evening before bed</div>
+            <p class="supp-why">Supports your AMPD1 energy pathway, helps COMT variant with stress regulation, and aids sleep quality (insomnia is on your chart since 2022). Glycinate form is the most sleep-friendly and gut-tolerant.</p>
+            <a href="https://www.amazon.com/s?k=Thorne+Magnesium+Glycinate" class="supp-link" target="_blank">Amazon →</a>
+          </div>
+
+          <div class="supp-card">
+            <div class="supp-name">Creatine Monohydrate</div>
+            <div class="supp-brand">Optional — training support</div>
+            <div class="supp-dose">5 g daily · any time</div>
+            <p class="supp-why">Cheapest, most-studied supplement for strength, recovery, and cognitive function. Directly supports AMPD1-related ATP pathway. Worth considering given Muay Thai volume.</p>
+            <a href="https://www.amazon.com/s?k=Thorne+Creatine" class="supp-link" target="_blank">Amazon →</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================= 06 TIMING ======================= -->
+      <section id="timing">
+        <div class="section-header">
+          <div class="section-number">§06</div>
+          <h2 class="section-title">Daily <em>timing</em></h2>
+        </div>
+
+        <p style="max-width: 60ch; color: var(--slate);">
+          Two anchor moments, tied to meals you're already eating. Simple. Automatic.
+        </p>
+
+        <div class="schedule-grid">
+          <div class="time-block">
+            <div class="time-label">Morning</div>
+            <div class="time-meal">With breakfast · 8–9am</div>
+            <ul class="time-items">
+              <li>Vitamin D3 + K2</li>
+              <li>Methyl-Guard Plus (or Basic B)</li>
+              <li>EPA Omega-3 (if only 1 big meal)</li>
+            </ul>
+          </div>
+
+          <div class="time-block">
+            <div class="time-label">Midday</div>
+            <div class="time-meal">With lunch / largest meal</div>
+            <ul class="time-items">
+              <li>EPA Omega-3 (if not morning)</li>
+              <li>Red Yeast Rice + CoQ10</li>
+              <li>Creatine 5g (optional — any time)</li>
+            </ul>
+          </div>
+
+          <div class="time-block">
+            <div class="time-label">Evening</div>
+            <div class="time-meal">With dinner / before bed</div>
+            <ul class="time-items">
+              <li>Probiotic PRO-15</li>
+              <li>Leaky Gut Revive</li>
+              <li>Magnesium Glycinate (before bed)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="margin-top: 2rem; padding: 1.25rem 1.5rem; background: var(--cream); border-left: 3px solid var(--ochre); font-size: 14px; color: var(--slate);">
+          <strong style="color: var(--ink); display: block; margin-bottom: 6px;">Consistency beats optimization.</strong>
+          If picking "perfect" timing becomes the reason you don't take something — take it whenever. The gap between taking it at imperfect times and not taking it at all is massive. The gap between perfect and imperfect timing is tiny.
+        </div>
+      </section>
+
+      <!-- ======================= 07 DIET ======================= -->
+      <section id="diet">
+        <div class="section-header">
+          <div class="section-number">§07</div>
+          <h2 class="section-title">Diet <em>protocol</em></h2>
+        </div>
+
+        <p style="max-width: 64ch; margin-bottom: 2rem; color: var(--slate);">
+          Your dietary picture is dominated by two imperatives: lower triglycerides and reduce liver stress. Both respond to the same pattern — less refined carbohydrate, less alcohol, more fiber, more omega-3s, more protein. Your ADD1 variant adds salt-sensitivity as a third lever.
+        </p>
+
+        <div class="diet-layout">
+          <div class="diet-column diet-emphasize">
+            <h4>Emphasize</h4>
+            <ul class="diet-list">
+              <li>
+                <strong>Fatty cold-water fish</strong>
+                <span>Salmon, sardines, mackerel, trout — 2–3x weekly. Directly lowers triglycerides and supports your CFH variant.</span>
+              </li>
+              <li>
+                <strong>Leafy greens & cruciferous</strong>
+                <span>Spinach, kale, broccoli, Brussels sprouts. Natural folate (the food form your MTHFR prefers), plus estrogen-clearance support via DIM/indole-3-carbinol.</span>
+              </li>
+              <li>
+                <strong>Lean protein at every meal</strong>
+                <span>40g+ per meal. Grass-fed beef, wild game, chicken thighs, eggs. Supports free testosterone, blunts glucose response, satiates.</span>
+              </li>
+              <li>
+                <strong>Healthy fats</strong>
+                <span>Extra virgin olive oil, avocado, walnuts, almonds. Essential for D3 absorption and satiety. Anti-inflammatory profile.</span>
+              </li>
+              <li>
+                <strong>Berries & low-glycemic fruit</strong>
+                <span>Blueberries, raspberries, green apples, kiwi. Fiber + antioxidants + low trig impact.</span>
+              </li>
+              <li>
+                <strong>Fermented foods</strong>
+                <span>Sauerkraut, kimchi, kefir, plain Greek yogurt. Directly supports the gut repair protocol.</span>
+              </li>
+              <li>
+                <strong>Potassium-rich foods</strong>
+                <span>Avocado, potatoes, beans, bananas. Counter-balances sodium for your ADD1 variant.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="diet-column diet-avoid">
+            <h4>Limit or avoid</h4>
+            <ul class="diet-list">
+              <li>
+                <strong>Alcohol</strong>
+                <span>Non-negotiable through June 11 and strongly recommended ongoing. PNPLA3 + history of elevated AST/ALT = your liver takes disproportionate damage.</span>
+              </li>
+              <li>
+                <strong>Refined carbs & added sugar</strong>
+                <span>White bread, pastries, sodas, sweetened coffee drinks. These are the single biggest trigger for your triglyceride elevation.</span>
+              </li>
+              <li>
+                <strong>Folic acid (synthetic)</strong>
+                <span>Fortified cereals, bargain multivitamins, enriched flour products. Competes with methylfolate at receptors in MTHFR carriers.</span>
+              </li>
+              <li>
+                <strong>Industrial seed oils</strong>
+                <span>Soybean, corn, cottonseed oils — common in fried and processed foods. Pro-inflammatory omega-6 load works against your EPA protocol.</span>
+              </li>
+              <li>
+                <strong>High-sodium processed foods</strong>
+                <span>Deli meat, packaged snacks, frozen meals, fast food. ADD1 variant makes your BP more reactive.</span>
+              </li>
+              <li>
+                <strong>Charred / well-done meats</strong>
+                <span>Slow acetylator genotype (NAT2) = slower clearance of certain dietary carcinogens. Grill, don't incinerate.</span>
+              </li>
+              <li>
+                <strong>Gluten (trial period)</strong>
+                <span>Per PCP's elimination suggestion for chronic diarrhea. 4-week strict elimination, then reintroduce and observe. Informs the GI picture.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="flourish"><div class="flourish-line"></div><span class="flourish-dot">◆</span><div class="flourish-line"></div></div>
+
+        <h3 style="margin-bottom: 1rem;">A sample day</h3>
+        <div style="background: white; padding: 1.5rem; border: 0.5px solid var(--border); font-size: 14px; line-height: 1.8; color: var(--slate);">
+          <p><strong style="color: var(--ink);">Breakfast</strong> — 3 eggs, half avocado, sautéed spinach, black coffee. Supplements: D3/K2 + Methyl-Guard.</p>
+          <p><strong style="color: var(--ink);">Lunch</strong> — Large salad with grilled salmon or chicken thigh, olive oil, walnuts, berries, mixed greens, cucumber. Supplements: EPA + RYR/CoQ10.</p>
+          <p><strong style="color: var(--ink);">Dinner</strong> — Grass-fed ribeye or wild game, roasted sweet potato (modest portion), steamed broccoli. Kimchi or sauerkraut on the side.</p>
+          <p><strong style="color: var(--ink);">Snack (if needed)</strong> — Greek yogurt + blueberries, or a handful of almonds and an apple.</p>
+          <p style="margin-top: 1rem; font-style: italic; color: var(--stone);">White rice isn't forbidden — use it as a side with protein-heavy meals, not as a base. Basmati &gt; jasmine if you want to optimize.</p>
+        </div>
+      </section>
+
+      <!-- ======================= 08 EXERCISE ======================= -->
+      <section id="exercise">
+        <div class="section-header">
+          <div class="section-number">§08</div>
+          <h2 class="section-title">Exercise <em>programming</em></h2>
+        </div>
+
+        <p style="max-width: 64ch; margin-bottom: 1rem; color: var(--slate);">
+          You already have a foundation — Muay Thai Tuesday and Thursday. The gaps in your current week for peak health at 32 are: <strong>structured zone 2 cardio</strong> (for insulin resistance and cardiovascular health), <strong>hypertrophy-focused lifting</strong> (for testosterone, bone density, metabolic rate), and <strong>mobility/recovery work</strong> (cervical radiculopathy history + AMPD1 carrier status).
+        </p>
+
+        <div class="exercise-week">
+          <div class="day-card train">
+            <div class="day-label">MON</div>
+            <div class="day-activity serif">Lower Body Strength</div>
+            <div class="day-note">Squats, RDLs, split squats, calves. 45 min.</div>
+          </div>
+          <div class="day-card muay">
+            <div class="day-label">TUE</div>
+            <div class="day-activity serif">Muay Thai</div>
+            <div class="day-note">6–7pm. AM: 20min walk.</div>
+          </div>
+          <div class="day-card train">
+            <div class="day-label">WED</div>
+            <div class="day-activity serif">Zone 2 Cardio</div>
+            <div class="day-note">45–60 min. HR 115–135. Jog, bike, incline walk.</div>
+          </div>
+          <div class="day-card muay">
+            <div class="day-label">THU</div>
+            <div class="day-activity serif">Muay Thai</div>
+            <div class="day-note">6–7pm. AM: mobility work.</div>
+          </div>
+          <div class="day-card train">
+            <div class="day-label">FRI</div>
+            <div class="day-activity serif">Upper Body Strength</div>
+            <div class="day-note">Pull-ups, press, rows, accessories. 45 min.</div>
+          </div>
+          <div class="day-card train">
+            <div class="day-label">SAT</div>
+            <div class="day-activity serif">Long / Golf</div>
+            <div class="day-note">Golf, long walk, or 60min cardio. Movement &gt; intensity.</div>
+          </div>
+          <div class="day-card rest">
+            <div class="day-label">SUN</div>
+            <div class="day-activity serif">Rest + Mobility</div>
+            <div class="day-note">15min stretch, sauna if available, meal prep.</div>
+          </div>
+        </div>
+
+        <div class="pillars-grid" style="margin-top: 2rem;">
+          <div class="pillar">
+            <div class="pillar-num">01</div>
+            <h4>Zone 2 is the missing piece</h4>
+            <p>60 min/week at conversational pace (HR 115–135). Most evidence-backed intervention for insulin resistance — directly attacks your Trig/HDL ratio. More impactful than HIIT for your current profile.</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-num">02</div>
+            <h4>Lift heavy twice weekly</h4>
+            <p>Hypertrophy + progressive overload. Raises free testosterone, improves body composition, protects bone density (CFH variant makes long-term tissue health matter more). Compound lifts &gt; isolation.</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-num">03</div>
+            <h4>Recovery as training</h4>
+            <p>With AMPD1 carrier status and a cervical radiculopathy history, sleep and mobility aren't optional. Post-Muay Thai nutrition within 60 min. Sauna if accessible (cardiovascular + stress regulation).</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-num">04</div>
+            <h4>Walking as default</h4>
+            <p>Your PCP's direct advice: 10k steps daily. Outdoor walk in morning light helps circadian regulation (your insomnia diagnosis) and vitamin D synthesis. Stack it with phone calls and podcasts.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================= 09 LIFESTYLE ======================= -->
+      <section id="lifestyle">
+        <div class="section-header">
+          <div class="section-number">§09</div>
+          <h2 class="section-title">Lifestyle <em>pillars</em></h2>
+        </div>
+
+        <p style="max-width: 64ch; margin-bottom: 2rem; color: var(--slate);">
+          The non-supplement, non-exercise inputs. These are what actually produce long-term change when done consistently.
+        </p>
+
+        <div class="pillars-grid">
+          <div class="pillar">
+            <div class="pillar-num">I.</div>
+            <h4>Sleep</h4>
+            <p>Target 7.5–8h in bed, 10pm–6am ideally. Dark, cool room. Phone out of bedroom after 9pm — environmental design over willpower. Your chronic insomnia diagnosis makes this foundational, not optional. Magnesium glycinate supports this.</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-num">II.</div>
+            <h4>Sunlight</h4>
+            <p>10–20 minutes within an hour of waking, no sunglasses, outdoors. Separately, 10 min midday if you can. Direct effect on circadian regulation, mood, and vitamin D synthesis. Austin sun + Texas latitude make this genuinely accessible year-round.</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-num">III.</div>
+            <h4>Stress regulation</h4>
+            <p>Your COMT variant means stress hits harder. Muay Thai is excellent for dopamine regulation. Beyond that: breathwork (box breathing pre-cold calls), journaling, Friday dinner tradition, time outdoors. Anxiety management is a genetic requirement, not a weakness.</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-num">IV.</div>
+            <h4>Alcohol</h4>
+            <p>The single most leveraged variable on this entire document. Every biomarker flagged — liver, triglycerides, estrogen, BP, weight, sleep, anxiety — improves when alcohol is out. Your PNPLA3 variant makes your body pay a premium for every drink. The bet through June 11 is protective; continuing the pattern is transformative.</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-num">V.</div>
+            <h4>Hydration</h4>
+            <p>80–100oz water daily. A pinch of sea salt in your first glass supports adrenal function and electrolytes (coffee and Muay Thai both deplete). Track for a week to baseline.</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-num">VI.</div>
+            <h4>Environmental toxin load</h4>
+            <p>Per your PCP's specific advice: check products through EWG's Skin Deep database. Swap to fragrance-free detergent, mineral (zinc oxide) sunscreen, stainless/glass cookware. Not urgent, not optional long-term — and family history of lung cancer adds weight.</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-num">VII.</div>
+            <h4>Sauna + cold</h4>
+            <p>If/when accessible. Sauna 3–4x/week (15–20 min 170°F) improves cardiovascular markers and lowers all-cause mortality in the longest longitudinal studies. Cold exposure (cold shower finish) supports dopamine regulation and metabolic health.</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-num">VIII.</div>
+            <h4>Connection</h4>
+            <p>Friday dinner with the 17-year friends, family, faith community exploration — these aren't soft. Social connection quality predicts all-cause mortality more strongly than most clinical interventions. Keep showing up.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================= 10 LONG TERM ======================= -->
+      <section id="longterm">
+        <div class="section-header">
+          <div class="section-number">§10</div>
+          <h2 class="section-title">The <em>long view</em></h2>
+        </div>
+
+        <div class="narrative">
+          <p>At thirty-two, you are at the inflection point where the habits of the next decade compound into either acceleration or erosion by forty-five. The data shows you were in excellent health in 2021. The data shows slippage from 2022 through 2024. The data shows the beginnings of a reversal in 2026. That reversal — sobriety, structure, Muay Thai, sales routine, bloodwork awareness — is real, and it's working. The question is whether you consolidate it.</p>
+          <p>Peak health at thirty-two is not an aesthetic project. It is a <strong>compounding bet on the next four decades</strong>. The specific interventions on this dashboard — Vitamin D consistency, methylated Bs, EPA, sustained alcohol minimization, zone 2 cardio, sleep — each have a return curve measured in years, not weeks. You won't feel most of them on day 30. You will feel all of them by day 365.</p>
+          <p>Three trajectories are worth tracking as lifelong anchors: <em>cardiovascular</em> (ApoB, trig/HDL, BP), <em>metabolic</em> (weight, waist, fasting glucose, A1c), and <em>methylation</em> (homocysteine). If those three stay in optimal range from here forward, the compound returns on everything else — energy, cognition, recovery, mood, longevity — follow.</p>
+          <p>Book one full panel per year. Annual eye exam starting now (CFH). Home BP cuff checks weekly. Keep the Fullscript account active. The May 4 appointment is the first checkpoint. Every 90 days after that, re-read this dashboard and run the question: <em>what's drifted, and what do I tighten?</em></p>
+        </div>
+
+        <div class="pull-quote">
+          "The habits of the next decade compound into either acceleration or erosion by forty-five."
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer>
+    <div class="divider"></div>
+    <p>Trevor Cleworth · Personal Health Protocol v1.0</p>
+    <p>Synthesized April 24, 2026 · For personal use only · Not medical advice</p>
+    <p style="margin-top: 1rem; color: var(--stone);">All clinical decisions should be discussed with your licensed providers.</p>
+  </footer>
+
+</div>
+
+</body>
+</html>
