@@ -77,16 +77,26 @@
   .marker-status{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;text-align:right;}
   .v-red{color:var(--rust);}.v-amber{color:var(--amber-alert);}.v-green{color:var(--green-good);}
   /* GENETICS */
-  .gene-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;}
-  .gene-card{background:var(--paper-2);border:.5px solid var(--border);padding:1.5rem;}
-  .gene-header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px;}
-  .gene-name{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--ink);}
-  .gene-status{font-family:'JetBrains Mono',monospace;font-size:10px;padding:3px 8px;letter-spacing:.08em;text-transform:uppercase;border-radius:2px;font-weight:500;white-space:nowrap;}
-  .s-hetero{background:rgba(184,137,58,.2);color:var(--amber-alert);}.s-homo{background:rgba(139,46,31,.15);color:var(--rust);}.s-good{background:rgba(58,74,42,.15);color:var(--green-good);}
-  .gene-function{font-family:'Fraunces',serif;font-size:14px;font-style:italic;color:var(--slate);margin-bottom:10px;}
-  .gene-desc{font-size:13px;color:var(--slate);line-height:1.6;margin-bottom:10px;}
-  .gene-remedy{padding:10px 12px;background:white;border-left:2px solid var(--moss);font-size:12px;line-height:1.6;}
-  .gene-remedy strong{color:var(--moss);font-weight:600;}
+  .gene-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(560px,1fr));gap:1.25rem;}
+  @media(max-width:680px){.gene-grid{grid-template-columns:1fr;}}
+  .gene-card{background:white;border:.5px solid var(--border);border-left:4px solid var(--rust);padding:1.75rem;}
+  .gene-card.amber-card{border-left-color:var(--ochre);}
+  .gene-card.green-card{border-left-color:var(--moss);}
+  .gene-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:4px;}
+  .gene-name{font-family:'Fraunces',serif;font-size:1.25rem;font-weight:500;color:var(--ink);letter-spacing:-.01em;}
+  .gene-badge{font-family:'JetBrains Mono',monospace;font-size:10px;padding:4px 10px;letter-spacing:.08em;text-transform:uppercase;border-radius:2px;font-weight:500;white-space:nowrap;flex-shrink:0;}
+  .badge-red{background:rgba(139,46,31,.12);color:var(--rust);}
+  .badge-amber{background:rgba(184,137,58,.15);color:var(--amber-alert);}
+  .badge-green{background:rgba(58,74,42,.12);color:var(--green-good);}
+  .gene-meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--stone);letter-spacing:.06em;margin-bottom:1.25rem;}
+  .gene-body{display:flex;flex-direction:column;gap:1rem;margin-bottom:1.25rem;}
+  .gene-point{}
+  .gene-point-label{font-weight:700;font-size:14px;color:var(--ink);display:inline;}
+  .gene-point-text{font-size:14px;color:var(--slate);line-height:1.65;display:inline;}
+  .gene-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.25rem;}
+  .gene-tag{font-size:12px;padding:4px 10px;background:var(--paper-2);border:.5px solid var(--border);color:var(--slate);border-radius:2px;}
+  .gene-action{background:var(--cream);border-left:3px solid var(--moss);padding:1rem 1.25rem;font-size:13px;color:var(--slate);line-height:1.65;}
+  .gene-action strong{color:var(--ink);font-weight:700;}
   /* SUPPLEMENTS */
   .supp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;}
   .supp-card{background:white;border:1px solid var(--border);padding:1.5rem;}
@@ -319,70 +329,117 @@
     <h2 class="section-title">Genetic <em>blueprint</em></h2>
   </div>
   <p style="max-width:60ch;margin-bottom:2rem;color:var(--slate);">Variants that affect your day-to-day health choices. Pharmacogenomic variants for drugs you're not taking and variants with no clinical consequence are omitted.</p>
-  <p style="max-width:60ch;margin-bottom:1rem;font-size:13px;color:var(--stone);font-family:'JetBrains Mono',monospace;letter-spacing:0.04em;">Verified directly from raw AncestryDNA file (677,436 SNPs · build 37.1 · Apr 23, 2026)</p>
+  <p style="max-width:60ch;margin-bottom:1rem;font-size:13px;color:var(--stone);font-family:'JetBrains Mono',monospace;letter-spacing:0.04em;">Verified directly from raw AncestryDNA file · 677,436 SNPs · build 37.1 · Apr 23, 2026</p>
   <div class="gene-grid">
 
-    <div class="gene-card">
-      <div class="gene-header"><span class="gene-name">MTHFR C677T</span><span class="gene-status s-hetero">One copy · rs1801133 · A/G</span></div>
-      <div class="gene-function">Your B-vitamin processing enzyme runs at reduced speed.</div>
-      <p class="gene-desc">Think of MTHFR as a converter that turns the folate in food into the form your body can actually use. Your version of this enzyme works at roughly 65% efficiency. The downstream effect is that certain critical processes — cardiovascular health, mood regulation, gut lining integrity, and cellular repair — get less of what they need. This is the primary explanation for your elevated homocysteine: it's a waste product that builds up when this conversion is sluggish. Without MTRR compounding it (that variant is not present in your DNA), MTHFR alone is manageable with the right B-vitamin form.</p>
-      <div class="gene-remedy"><strong>What to do:</strong> Take B vitamins in their pre-converted "methylated" form — Methyl-Guard Plus does this. Avoid supplements listing "folic acid" — that's the unprocessed form your enzyme struggles with. Target homocysteine below 7 µmol/L (currently 8.4 and trending down — good).</div>
+    <div class="gene-card amber-card">
+      <div class="gene-header"><div class="gene-name">MTHFR — the folate processor</div><span class="gene-badge badge-amber">Pay attention</span></div>
+      <div class="gene-meta">One copy of the variant · rs1801133 (C677T) · ~1 in 4 people have this</div>
+      <div class="gene-body">
+        <div class="gene-point"><span class="gene-point-label">The simple version: </span><span class="gene-point-text">Your body needs folate (vitamin B9) for thousands of jobs — repairing DNA, making brain chemicals, clearing toxins, building healthy blood cells. But folate from food and most vitamins comes in a "raw" form your body has to convert before it can use it. Your MTHFR gene makes the converter.</span></div>
+        <div class="gene-point"><span class="gene-point-label">What's different about yours: </span><span class="gene-point-text">Your converter runs at about 65% efficiency instead of 100%. It's not broken — it just works slower than average. About a quarter of people have this exact variant.</span></div>
+        <div class="gene-point"><span class="gene-point-label">Why this matters for your blood: </span><span class="gene-point-text">When folate doesn't get processed properly, a substance called <em>homocysteine</em> builds up. Elevated homocysteine damages blood vessel walls and contributes to plaque buildup. Your current homocysteine is 8.4 — above the target of 7. This is directly fixable.</span></div>
+        <div class="gene-point"><span class="gene-point-label">The folic acid trap: </span><span class="gene-point-text">Most cheap multivitamins, fortified breads, and cereals contain "folic acid" — the synthetic raw form. With your variant, that synthetic version can actually block the receptors your body needs. You want "methylfolate" or "5-MTHF" on the label — that's the pre-converted form your body can use immediately.</span></div>
+        <div class="gene-point"><span class="gene-point-label">One thing to flag with doctors: </span><span class="gene-point-text">If you're ever prescribed methotrexate (used for arthritis or some cancers), they need to know about this variant — it changes how the drug behaves. Same goes for some antidepressants.</span></div>
+      </div>
+      <div class="gene-tags"><span class="gene-tag">Affects cardiovascular risk</span><span class="gene-tag">Avoid synthetic folic acid</span><span class="gene-tag">Use methylfolate instead</span><span class="gene-tag">Flag with prescribing doctors</span></div>
+      <div class="gene-action"><strong>What to do:</strong> Take Thorne Methyl-Guard Plus daily — it has the right form of folate plus B12 and B6 to support the whole pathway. Read labels and avoid anything saying "folic acid." Get homocysteine retested in July — target is below 7. Avoid fortified breads and cereals as a daily staple.</div>
+    </div>
+
+    <div class="gene-card amber-card">
+      <div class="gene-header"><div class="gene-name">CFH — the eye protector</div><span class="gene-badge badge-amber">Monitor closely</span></div>
+      <div class="gene-meta">One copy of the variant · rs1061170 (Y402H) · affects macular degeneration risk</div>
+      <div class="gene-body">
+        <div class="gene-point"><span class="gene-point-label">The simple version: </span><span class="gene-point-text">Your eyes have their own immune system. The CFH gene controls inflammation in the retina — specifically in the macula, the small central area responsible for sharp vision. Think of it as the retina's fire suppression system.</span></div>
+        <div class="gene-point"><span class="gene-point-label">What's different about yours: </span><span class="gene-point-text">Your version of CFH is less effective at suppressing inflammation in the macula. Over decades, small amounts of uncontrolled inflammation accumulate and can damage the light-sensing cells there — the leading cause of vision loss in people over 60 in developed countries.</span></div>
+        <div class="gene-point"><span class="gene-point-label">Why Texas matters here: </span><span class="gene-point-text">UV exposure accelerates the damage this variant predisposes you to. You play golf outdoors in one of the sunniest states in the country. That's a reason to be consistent with sun protection — not a reason to panic.</span></div>
+        <div class="gene-point"><span class="gene-point-label">The good news: </span><span class="gene-point-text">This won't affect your vision for decades. The omega-3s you're already taking directly support retinal health. Starting annual eye exams now gives you a baseline that makes future changes detectable early — when they're still fully treatable.</span></div>
+      </div>
+      <div class="gene-tags"><span class="gene-tag">Macular degeneration risk</span><span class="gene-tag">UV protection essential</span><span class="gene-tag">Annual eye exam required</span><span class="gene-tag">Omega-3s help</span></div>
+      <div class="gene-action"><strong>What to do:</strong> Book a dilated eye exam with an ophthalmologist this year — establish a macular baseline. Wear UV-blocking sunglasses every time you're outside, especially golfing. Never smoke. Continue EPA omega-3s — they directly support retinal health for this variant.</div>
+    </div>
+
+    <div class="gene-card amber-card">
+      <div class="gene-header"><div class="gene-name">PNPLA3 — the liver vulnerability</div><span class="gene-badge badge-amber">High relevance</span></div>
+      <div class="gene-meta">One copy of the variant · rs738409 (I148M) · strongest known genetic risk factor for fatty liver</div>
+      <div class="gene-body">
+        <div class="gene-point"><span class="gene-point-label">The simple version: </span><span class="gene-point-text">Your liver constantly processes fat — pulling it out of cells, repackaging it, sending it elsewhere. PNPLA3 is one of the enzymes that manages this. Your version is less efficient at clearing fat from liver cells.</span></div>
+        <div class="gene-point"><span class="gene-point-label">What's different about yours: </span><span class="gene-point-text">Fat accumulates in your liver cells more easily than average — especially when alcohol is involved. Alcohol floods the liver with fat it can't clear fast enough, and your PNPLA3 variant makes that bottleneck worse. This is the direct genetic explanation for your three episodes of elevated AST/ALT on record.</span></div>
+        <div class="gene-point"><span class="gene-point-label">What this means practically: </span><span class="gene-point-text">Your liver isn't broken — it has less margin for error. The same amount of alcohol that another person's liver handles without issue can tip yours into inflammation territory. Your sobriety protocol isn't just willpower — it's medically appropriate given this variant.</span></div>
+        <div class="gene-point"><span class="gene-point-label">The NAT2 compounding factor: </span><span class="gene-point-text">You also carry a fully homozygous NAT2 slow-acetylator genotype. Both variants affect liver detox capacity simultaneously — your liver is working harder than the average person's at baseline.</span></div>
+      </div>
+      <div class="gene-tags"><span class="gene-tag">Fatty liver susceptibility</span><span class="gene-tag">Alcohol hits harder</span><span class="gene-tag">Monitor ALT/AST annually</span><span class="gene-tag">Compounded by NAT2</span></div>
+      <div class="gene-action"><strong>What to do:</strong> Your sobriety protocol is the single most protective thing for this variant. NAC 600mg daily supports glutathione — your liver's primary protective molecule. Sulforaphane from broccoli sprouts activates detox pathways directly. Get ALT and AST checked at every annual physical.</div>
+    </div>
+
+    <div class="gene-card amber-card">
+      <div class="gene-header"><div class="gene-name">COMT — the stress dial</div><span class="gene-badge badge-amber">High relevance</span></div>
+      <div class="gene-meta">One copy of the variant · rs4680 (Val158Met) · affects dopamine clearance speed</div>
+      <div class="gene-body">
+        <div class="gene-point"><span class="gene-point-label">The simple version: </span><span class="gene-point-text">After something stressful, exciting, or intense happens, your brain releases dopamine. The COMT enzyme clears it so you can return to baseline. Think of it as the brain's reset button after a big moment.</span></div>
+        <div class="gene-point"><span class="gene-point-label">What's different about yours: </span><span class="gene-point-text">Your reset button is slower. Dopamine lingers longer before being cleared. On good days this is genuinely useful — sharper focus, stronger drive, better performance under pressure. Under sustained stress, it means your system stays activated longer, anxiety accumulates faster, and you're harder to wind down.</span></div>
+        <div class="gene-point"><span class="gene-point-label">Why caffeine hits you harder: </span><span class="gene-point-text">Caffeine amplifies dopamine activity. Combined with slower clearance, an afternoon coffee keeps your brain running on high until well into the night. This is a direct mechanism behind your insomnia — it's not just habits, it's biochemistry.</span></div>
+        <div class="gene-point"><span class="gene-point-label">The anxiety connection: </span><span class="gene-point-text">Your GAD diagnosis makes complete sense in this context. The anxiety-alcohol coping loop documented in your medical record is also consistent — alcohol temporarily suppresses the heightened dopamine state, which creates a feedback loop. This variant doesn't cause anxiety, but it lowers the threshold for it under stress.</span></div>
+        <div class="gene-point"><span class="gene-point-label">The upside: </span><span class="gene-point-text">Sales, Muay Thai, high-stakes situations — slower dopamine clearance likely gives you a real edge here. The goal isn't to eliminate the variant's effect, it's to manage the downside while keeping the upside.</span></div>
+      </div>
+      <div class="gene-tags"><span class="gene-tag">Slower stress recovery</span><span class="gene-tag">Caffeine hits harder</span><span class="gene-tag">Explains GAD diagnosis</span><span class="gene-tag">Exercise is medicine</span><span class="gene-tag">11am caffeine cutoff</span></div>
+      <div class="gene-action"><strong>What to do:</strong> Hard caffeine cutoff before 11am — non-negotiable for your insomnia. Exercise (Muay Thai) is the most effective natural COMT regulator. Box breathing (4-4-4-4) before high-stress moments — calls, difficult conversations — creates an acute parasympathetic response. Magnesium glycinate before bed helps wind the activated state down. Blue-light blocking glasses after 9pm.</div>
     </div>
 
     <div class="gene-card">
-      <div class="gene-header"><span class="gene-name">CFH Y402H</span><span class="gene-status s-hetero">One copy · rs1061170 · T/C</span></div>
-      <div class="gene-function">Your eyes' inflammation control system is slightly less effective.</div>
-      <p class="gene-desc">Your eyes have a built-in system that manages inflammation and protects the retina. This variant makes that system less efficient, which over decades can allow damage to accumulate in the macula — the part of the eye responsible for sharp central vision. It won't affect you noticeably for decades, but the interventions that prevent it work best when started early. Texas sun exposure and your outdoor lifestyle make this genuinely worth managing proactively.</p>
-      <div class="gene-remedy"><strong>What to do:</strong> Annual dilated eye exam — ophthalmologist, not just optometrist. UV-blocking sunglasses outdoors always. Never smoke. The omega-3s you're already taking directly support retinal health.</div>
+      <div class="gene-header"><div class="gene-name">AMPD1 — the muscle energy carrier</div><span class="gene-badge badge-amber">Worth knowing</span></div>
+      <div class="gene-meta">One copy of the variant · rs17602729 · carrier status only (autosomal recessive)</div>
+      <div class="gene-body">
+        <div class="gene-point"><span class="gene-point-label">The simple version: </span><span class="gene-point-text">During hard exercise, your muscles burn through ATP — their fuel — and need to replenish it fast. AMPD1 helps manage that replenishment. Your version of this gene has a loss-of-function mutation.</span></div>
+        <div class="gene-point"><span class="gene-point-label">What carrier status means: </span><span class="gene-point-text">You have one copy, not two. Because this condition is autosomal recessive — two copies required to fully express it — you're a carrier rather than affected. Most carriers are completely asymptomatic. The effect at one copy is subtle at most.</span></div>
+        <div class="gene-point"><span class="gene-point-label">Why it's still worth knowing: </span><span class="gene-point-text">If you've ever noticed recovery after a hard Muay Thai session or heavy lift feels disproportionate to what you did — this is a plausible contributing factor. Creatine is unusually well-targeted at this variant specifically.</span></div>
+      </div>
+      <div class="gene-tags"><span class="gene-tag">Carrier only — not deficient</span><span class="gene-tag">Creatine well-targeted here</span><span class="gene-tag">Post-training nutrition matters</span></div>
+      <div class="gene-action"><strong>What to do:</strong> Protein and carbs within 60 minutes of every hard session. Creatine 5g daily provides an immediate ATP buffer in muscle cells — the exact gap this variant creates. Magnesium CitraMate in the morning supports the energy pathway.</div>
+    </div>
+
+    <div class="gene-card amber-card">
+      <div class="gene-header"><div class="gene-name">NAT2 — the slow detoxifier</div><span class="gene-badge badge-amber">Clinically significant</span></div>
+      <div class="gene-meta">Homozygous on both tested variants · rs1799930 + rs1041983 · full slow-acetylator phenotype</div>
+      <div class="gene-body">
+        <div class="gene-point"><span class="gene-point-label">The simple version: </span><span class="gene-point-text">Your liver uses a process called acetylation to neutralize certain chemicals — including some medications and compounds produced when meat is cooked at high heat. NAT2 runs this process. Your version runs significantly more slowly than average.</span></div>
+        <div class="gene-point"><span class="gene-point-label">What's different about yours: </span><span class="gene-point-text">You're homozygous on both tested NAT2 variants — meaning you inherited slow-acetylator alleles from both parents at both positions. This is the full slow-acetylator phenotype. Certain chemicals that enter your body linger longer before being cleared.</span></div>
+        <div class="gene-point"><span class="gene-point-label">Why this matters for medications: </span><span class="gene-point-text">Isoniazid (TB treatment), some sulfonamide antibiotics, dapsone, hydralazine, and certain chemotherapy agents all require dose adjustment for slow acetylators — the standard dose can build up to toxic levels. This is well-established and any prescribing doctor should know.</span></div>
+        <div class="gene-point"><span class="gene-point-label">Why it compounds your liver picture: </span><span class="gene-point-text">Combined with PNPLA3, your liver is managing two separate vulnerabilities simultaneously. This makes your liver-support protocol — sobriety, NAC, sulforaphane — more important, not optional.</span></div>
+        <div class="gene-point"><span class="gene-point-label">The charred meat connection: </span><span class="gene-point-text">Carcinogens formed when meat is charred are metabolized through the NAT2 pathway. Slow acetylators have prolonged exposure to these compounds. It's not a reason to stop grilling — it's a reason not to incinerate your food.</span></div>
+      </div>
+      <div class="gene-tags"><span class="gene-tag">Full slow-acetylator phenotype</span><span class="gene-tag">Medication dose adjustment needed</span><span class="gene-tag">Avoid charred meat</span><span class="gene-tag">Compounded by PNPLA3</span></div>
+      <div class="gene-action"><strong>What to do:</strong> Tell every prescribing doctor: "I am a NAT2 slow acetylator — homozygous on rs1799930 and rs1041983." Save this in your phone. Relevant drugs: isoniazid, sulfonamides, dapsone, hydralazine, procainamide. Avoid heavily charred meat. Sulforaphane from broccoli sprouts directly activates the detox pathways NAT2 is supposed to run — one of the most targeted supplements you can take for this variant.</div>
     </div>
 
     <div class="gene-card">
-      <div class="gene-header"><span class="gene-name">PNPLA3</span><span class="gene-status s-hetero">One copy · rs738409 · C/G</span></div>
-      <div class="gene-function">Your liver is genetically more vulnerable to fat buildup and alcohol damage.</div>
-      <p class="gene-desc">This gene helps your liver clear fat from its own cells. Your version is less efficient at this, meaning fat accumulates more easily — particularly with alcohol or high refined carbohydrate intake. This is the most direct genetic explanation for your three episodes of elevated AST/ALT on record. Your liver isn't broken — it just has less margin for error than average. A bad weekend of drinking that someone else shrugs off, your liver registers as a significant event.</p>
-      <div class="gene-remedy"><strong>What to do:</strong> Alcohol is the most harmful input for this variant specifically — your sobriety protocol directly protects your liver. NAC and sulforaphane support your liver's own protective systems. Low refined carbs reduce fat accumulation. ALT/AST at every annual physical.</div>
+      <div class="gene-header"><div class="gene-name">VKORC1 — the blood thinner flag</div><span class="gene-badge badge-amber">Flag for doctors</span></div>
+      <div class="gene-meta">One copy of the variant · rs7294 · T/C · pharmacogenomic relevance only</div>
+      <div class="gene-body">
+        <div class="gene-point"><span class="gene-point-label">The simple version: </span><span class="gene-point-text">VKORC1 controls how your body processes vitamin K, which is essential for blood clotting. Blood thinners like warfarin work by blocking this gene. Your variant affects how sensitive you are to that drug.</span></div>
+        <div class="gene-point"><span class="gene-point-label">What this means: </span><span class="gene-point-text">If you're ever prescribed warfarin, the standard starting dose will likely be too strong or too weak. This is a well-established pharmacogenomic interaction — worth flagging proactively rather than discovering it during treatment.</span></div>
+        <div class="gene-point"><span class="gene-point-label">Does this affect you today? </span><span class="gene-point-text">No. Zero impact on your daily life, diet, or supplement protocol. It's purely a "note in your medical file" finding.</span></div>
+      </div>
+      <div class="gene-tags"><span class="gene-tag">No daily action needed</span><span class="gene-tag">Flag if prescribed warfarin</span><span class="gene-tag">Note in medical file</span></div>
+      <div class="gene-action"><strong>What to do:</strong> Add "VKORC1 variant (rs7294, heterozygous)" to your medical records and mention it to any doctor discussing anticoagulation. Nothing else required.</div>
     </div>
 
-    <div class="gene-card">
-      <div class="gene-header"><span class="gene-name">COMT Val158Met</span><span class="gene-status s-hetero">One copy · rs4680 · A/G</span></div>
-      <div class="gene-function">Your brain clears stress chemicals more slowly than average.</div>
-      <p class="gene-desc">After a stressful, exciting, or emotionally intense experience, your brain releases dopamine. Most people clear it relatively quickly and return to baseline. Your version of this gene clears it more slowly — you stay in a heightened state longer. On good days this can be an advantage: sharper focus, stronger drive, higher motivation under pressure. Under sustained load it means stress accumulates faster, anxiety lingers longer, and stimulants like caffeine hit harder and last longer. This is directly relevant to your GAD diagnosis and the anxiety-alcohol coping pattern in your record.</p>
-      <div class="gene-remedy"><strong>What to do:</strong> Hard caffeine cutoff before 11am — not 2pm. Caffeine's half-life is 5–7 hours, and your slower clearance extends that further. Exercise (Muay Thai) is the most effective natural dopamine regulator for this variant. Box breathing (4-4-4-4) before stressful situations — sales calls, difficult conversations — directly activates the calming branch of your nervous system. Magnesium glycinate before bed helps wind the elevated state down at night.</div>
-    </div>
-
-    <div class="gene-card">
-      <div class="gene-header"><span class="gene-name">AMPD1</span><span class="gene-status s-hetero">One copy · rs17602729 · A/G</span></div>
-      <div class="gene-function">Your muscles may fatigue faster during intense exercise — carrier status only.</div>
-      <p class="gene-desc">During hard exercise, your muscles burn through ATP — their fuel — and need to replenish it quickly. This gene manages that replenishment process. You carry one copy of a loss-of-function variant, which means you're a carrier for AMPD1 deficiency — not homozygous deficient. At carrier status most people are asymptomatic or notice only subtle effects. It's worth knowing given Muay Thai twice weekly plus lifting, but the effect at one copy is modest compared to two copies.</p>
-      <div class="gene-remedy"><strong>What to do:</strong> Post-training protein and carbs within 60 minutes of every hard session. Creatine provides an immediate ATP buffer in muscle cells — directly relevant here. Magnesium CitraMate in the morning supports the energy pathway. If you notice recovery feels disproportionately slow, it's worth mentioning to a sports medicine doctor.</div>
-    </div>
-
-    <div class="gene-card">
-      <div class="gene-header"><span class="gene-name">NAT2 (slow acetylator)</span><span class="gene-status s-homo">Two copies · rs1799930 + rs1041983 · both homozygous</span></div>
-      <div class="gene-function">Your body processes certain drugs and dietary toxins significantly more slowly than average.</div>
-      <p class="gene-desc">Your liver uses a process called acetylation to neutralize certain chemicals — including some medications and compounds produced when meat is cooked at high heat. You have two copies of slow-acetylator variants across two separate NAT2 SNPs, both homozygous. This is the full slow-acetylator phenotype — not partial. It means certain drugs stay in your system longer than standard dosing assumes, and that charred-meat carcinogens linger before being cleared. This is also relevant context for your liver picture alongside the PNPLA3 variant — your liver is carrying multiple challenges simultaneously.</p>
-      <div class="gene-remedy"><strong>What to do:</strong> Tell any prescribing doctor you are a "NAT2 slow acetylator" — particularly relevant for isoniazid (TB medication), certain sulfonamides, and some chemotherapy agents where dose adjustment is standard practice. Avoid charred or heavily well-done meat as a consistent habit. Sulforaphane from broccoli sprouts directly activates the detox pathways this gene is supposed to run. This is a stronger finding than previously stated — worth taking seriously.</div>
-    </div>
-
-    <div class="gene-card">
-      <div class="gene-header"><span class="gene-name">VKORC1</span><span class="gene-status s-hetero">One copy · rs7294 · T/C</span></div>
-      <div class="gene-function">Blood thinner medications would require dose adjustment in your body.</div>
-      <p class="gene-desc">If you ever need a blood thinner — warfarin is the most common — your body processes it differently than the standard dose assumes. This variant is well-established in pharmacogenomics and is one of the main reasons warfarin dosing is now routinely tested before prescribing. It doesn't affect your daily life at all right now, but it's a permanent flag for any prescribing physician.</p>
-      <div class="gene-remedy"><strong>What to do:</strong> Note "VKORC1 variant (rs7294, heterozygous)" in your medical file. Mention it to any doctor who prescribes anticoagulants. Nothing to act on today.</div>
-    </div>
-
-    <div class="gene-card">
-      <div class="gene-header"><span class="gene-name">LCT / MCM6</span><span class="gene-status s-good">Two copies · rs4988235 · A/A</span></div>
-      <div class="gene-function">You digest dairy fully throughout your entire life.</div>
-      <p class="gene-desc">Most mammals lose the ability to digest lactose after childhood. You have two copies of the lactase persistence variant — homozygous — which means the enzyme stays active permanently. This is confirmed from the raw file. There is no genetic basis for avoiding dairy.</p>
-      <div class="gene-remedy"><strong>What to do:</strong> Nothing. This is a green light. Greek yogurt, kefir, and cheese are part of your gut protocol — enjoy them without concern.</div>
+    <div class="gene-card green-card">
+      <div class="gene-header"><div class="gene-name">LCT/MCM6 — the dairy green light</div><span class="gene-badge badge-green">No action needed</span></div>
+      <div class="gene-meta">Two copies confirmed · rs4988235 · A/A · full lactase persistence</div>
+      <div class="gene-body">
+        <div class="gene-point"><span class="gene-point-label">The simple version: </span><span class="gene-point-text">Most humans lose the ability to digest lactose after childhood. A mutation common in European populations keeps the lactase enzyme active into adulthood. You have two copies of this variant — verified from the raw file — meaning the enzyme stays active permanently.</span></div>
+        <div class="gene-point"><span class="gene-point-label">What this means: </span><span class="gene-point-text">You digest dairy fully and always will. There is no genetic basis for avoiding dairy, and no reason to suspect it's contributing to your chronic diarrhea through a lactose mechanism. Look elsewhere for that answer — gluten trial, GI-MAP, gastro referral.</span></div>
+      </div>
+      <div class="gene-tags"><span class="gene-tag">Full lactase persistence confirmed</span><span class="gene-tag">Dairy is not your GI issue</span></div>
+      <div class="gene-action"><strong>What to do:</strong> Nothing. Enjoy Greek yogurt, kefir, and cheese as part of your gut protocol without concern.</div>
     </div>
 
   </div>
 
   <div class="inquiry-box" style="margin-top:1.5rem;">
-    <strong>Verified from raw AncestryDNA file — what changed from earlier versions</strong>
-    This genetics section has been through multiple corrections. The final version above is sourced directly from the raw AncestryDNA file (677,436 SNPs), not from any intermediate interpretation tool. Key changes: MTRR I22M is not present in your DNA (raw file shows A/A — reference allele). COMT Val158Met is present (raw file shows A/G — restored after being incorrectly removed). ADD1 G460W is not present (raw file shows G/G — correctly removed). VKORC1 is present as heterozygous (raw file shows T/C — restored). NAT2 is a stronger finding than previously stated — homozygous on both tested variants. LCT/MCM6 is confirmed homozygous — full lactase persistence. AMPD1 is carrier status only, not homozygous deficiency.
+    <strong>Source · verified from raw AncestryDNA file</strong>
+    Every variant above was looked up directly by rsID in your raw AncestryDNA file (677,436 SNPs, build 37.1, April 23 2026) — not from any intermediary interpretation tool. Key corrections through multiple revisions: MTRR I22M not present (A/A reference — removed). ADD1 G460W not present (G/G reference — removed). COMT is present (A/G heterozygous — confirmed). VKORC1 is present (T/C heterozygous — confirmed). NAT2 homozygous on both tested variants — full slow-acetylator phenotype. LCT/MCM6 homozygous — full lactase persistence confirmed. AMPD1 is carrier status only.
   </div>
 </section>
 
